@@ -3,10 +3,11 @@ package com.wute.testapp.cacheAlgorithm;
  * Created by the_moyan on 2019/9/27.
  */
 
+import android.util.Log;
+
 /**
- * Copyright (C) 2014 南京欣网视讯网络科技有限公司
  * <p>
- * TODO:
+ * TODO:双向链表
  *
  * @author the_moyan
  * @version 1.0,
@@ -62,6 +63,7 @@ public class DoubleLinkedList {
         }else {
             head= tail = null;
         }
+        size--;
         return node;
     }
     private Node delHead(){
@@ -73,8 +75,9 @@ public class DoubleLinkedList {
             head = head.next;
             head.prev = null;
         }else {
-            head= head = null;
+            head= tail = null;
         }
+        size--;
         return node;
     }
     public Node delNode(Node node){
@@ -88,8 +91,24 @@ public class DoubleLinkedList {
         }else{
             node.prev.next = node.next;
             node.next.prev = node.prev;
+            size--;
         }
-        size--;
         return node;
+    }
+    public Node popHead(){
+        Node node = head;
+        delNode(head);
+        return node;
+    }
+    public void print(){
+        StringBuffer printContent = new StringBuffer();
+        for(Node node = head;node != null;node = node.next){
+            if(node != tail){
+                printContent.append(node.key+","+node.value+"->");
+            }else {
+                printContent.append(node.key+","+node.value);
+            }
+        }
+        Log.e("DoubleLinkedList",printContent.toString()+"");
     }
 }
