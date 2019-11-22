@@ -11,17 +11,36 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField("String[]", "FMOD_LIBS", "{ \"fmodL\" }")
+            externalNativeBuild {
+                ndkBuild {
+                    arguments 'FMOD_CONFIG=ReleaseWithLogging', 'FMOD_LIB_SUFFIX=L'
+                }
+            }
+        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String[]", "FMOD_LIBS", "{ \"fmod\" }")
+            externalNativeBuild {
+                ndkBuild {
+                    arguments 'FMOD_CONFIG=Release', 'FMOD_LIB_SUFFIX='
+                }
+            }
         }
     }
+    externalNativeBuild {
+        ndkBuild {
+            path "Android.mk"
+        }
+    }
+
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation files('libs/fmod.jar')
 }
